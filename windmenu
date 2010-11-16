@@ -1,0 +1,21 @@
+#!/bin/sh
+#FONT='-*-*-*-*-*-*-*-*-*-*-*-*-iso10646-*'
+FONT="-fn -*-terminus-*-*-*-*-*-220-*-*-*-*-iso10646-*"
+COLORS="-nb #000000 -nf #FFFFFF -sb #0066ff"
+MISC="-i"
+PARAMS="${FONT} ${COLORS} ${MISC}"
+
+wnds=`wmctrl -l | cut -d " " -f 5-`
+wrks=`wmctrl -d | cut -d " " -f 13-`
+
+bufs=`emacsclient --eval \
+'(mapconcat (quote (lambda (s) (format "%s" s))) 
+	    (remove-if (quote (lambda (name) (string= (substring name 0 1) " "))) 
+		       (mapcar (quote buffer-name) (buffer-list))) 
+		       "\n")' \
+| xargs echo -e` 
+sel=`echo "$wnds\n$bufs\n$wrks" | sort -u | dmenu $PARAMS`
+test -z "$sel" && exit 0
+wrkid=`wmctrl -d | grep "$sel" | cut -d " " -f 1`
+test $wrkid && wmctrl -s $wrkid || wmctrl -a "$sel" || emacsclient -c --eval "(switch-to-buffer \"$sel\")" || exit 1
+exit 0
