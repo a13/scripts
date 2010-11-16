@@ -1,4 +1,2 @@
 #!/bin/sh
-#`dmenu_path | dmenu  -fn "Consolas-12" -nb '#000000' -nf '#FFFFFF' -x '212' -y '0' -w '600' -sb '#0066ff'` && eval "exec $exe"
 `dmenu_path | dmenu -fn "-*-terminus-*-*-*-*-*-160-*-*-*-*-iso10646-1" -nb '#000000' -nf '#FFFFFF' -sb '#0066ff'` && eval "exec $exe"
-#`dmenu_path | dmenu -fn "Consolas-12" -nb '#000000' -nf '#FFFFFF' -sb '#0066ff'` && eval "exec $exe"
