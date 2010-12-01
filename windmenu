@@ -2,11 +2,14 @@
 #FONT='-*-*-*-*-*-*-*-*-*-*-*-*-iso10646-*'
 FONT="-fn -*-terminus-*-*-*-*-*-220-*-*-*-*-iso10646-*"
 COLORS="-nb #000000 -nf #FFFFFF -sb #0066ff"
-MISC="-i"
+MISC="-i -l 20"
 PARAMS="${FONT} ${COLORS} ${MISC}"
 
-wnds=`wmctrl -l | cut -d " " -f 5-`
-wrks=`wmctrl -d | cut -d " " -f 13-`
+#wnds=`wmctrl -l | cut -d " " -f 5-`
+wnds=`wmctrl -l | awk '{print substr($0, index($0,$4))}'`
+#wrks=`wmctrl -d | cut -d " " -f 13-`
+wrks=`wmctrl -d | awk '{print substr($0, index($0,$9))}'`
+
 
 bufs=`emacsclient --eval \
 '(mapconcat (quote (lambda (s) (format "%s" s))) 
