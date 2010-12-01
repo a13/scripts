@@ -16,6 +16,6 @@ bufs=`emacsclient --eval \
 | xargs echo -e` 
 sel=`echo "$wnds\n$bufs\n$wrks" | sort -u | dmenu $PARAMS`
 test -z "$sel" && exit 0
-wrkid=`wmctrl -d | awk /$sel/'{print $1}'`
+wrkid=`wmctrl -d | awk "/$sel/"'{print $1}'`
 test $wrkid && wmctrl -s $wrkid || wmctrl -a "$sel" || emacsclient -c --eval "(switch-to-buffer \"$sel\")" || exit 1
 exit 0
