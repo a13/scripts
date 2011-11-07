@@ -1,8 +1,11 @@
 #!/bin/sh
-FONT="-fn -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-*"
-COLORS="-nb #122212 -nf #DEDEDE -sb #445444 -sf #EFEFEF"
+FONT="-*-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-*"
+NB="#122212"
+NF="#DEDEDE"
+SB="#445444"
+SF="#EFEFEF"
 MISC="-i -l 10"
-PARAMS="${FONT} ${COLORS} ${MISC}"
+DMENU="dmenu -fn $FONT -nb $NB -nf $NF -sb $SB -sf $SF $MISC"
 
 isfn ()
 { 
@@ -58,7 +61,7 @@ for a in $args; do
 done
 
 # select
-sel=`echo "$items" | grep -v ^$ | sort -u | dmenu $PARAMS`
+sel=`echo "$items" | grep -v ^$ | sort -u | $DMENU`
 test -z "$sel" && exit 0 # 1?
 
 # try to switch
