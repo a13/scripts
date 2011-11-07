@@ -59,7 +59,6 @@ done
 
 # select
 sel=`echo "$items" | sort -u | dmenu $PARAMS`
-echo $sel
 test -z "$sel" && exit 0 # 1?
 
 # try to switch
