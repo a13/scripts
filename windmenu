@@ -1,21 +1,69 @@
 #!/bin/sh
-#FONT='-*-*-*-*-*-*-*-*-*-*-*-*-iso10646-*'
-FONT="-fn -*-terminus-*-*-*-*-*-220-*-*-*-*-iso10646-*"
-COLORS="-nb #000000 -nf #FFFFFF -sb #0066ff"
-MISC="-i -l 20"
+FONT="-fn -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-*"
+COLORS="-nb #122212 -nf #DEDEDE -sb #445444 -sf #EFEFEF"
+MISC="-i -l 10"
 PARAMS="${FONT} ${COLORS} ${MISC}"
 
-wnds=`wmctrl -l | awk '{print substr($0, index($0,$4))}'`
-wrks=`wmctrl -d | awk '{print substr($0, index($0,$9))}'`
+isfn ()
+{ 
+    type $1 | grep -q 'shell function'
+}
 
-bufs=`emacsclient --eval \
-'(mapconcat (quote (lambda (s) (format "%s" s))) 
+# X windows
+xwin_ls ()
+{
+    wmctrl -l | awk '{print substr($0, index($0,$4))}'
+}
+
+xwin_sw ()
+{
+    wmctrl -a "$1"    
+}
+
+# X desktops
+xdesk_ls ()
+{
+    wmctrl -d | awk '{print substr($0, index($0,$9))}'
+}
+
+xdesk_sw ()
+{
+    wrkid=`wmctrl -d | awk "/$1/"'{print $1}'`
+    test $wrkid && wmctrl -s $wrkid 
+}
+
+# emacs buffers
+ebuf_ls ()
+{
+    emacsclient --eval \
+        '(mapconcat (quote (lambda (s) (format "%s" s))) 
 	    (remove-if (quote (lambda (name) (string= (substring name 0 1) " "))) 
 		       (mapcar (quote buffer-name) (buffer-list))) 
 		       "\n")' \
-| xargs echo -e` 
-sel=`echo "$wnds\n$bufs\n$wrks" | sort -u | dmenu $PARAMS`
-test -z "$sel" && exit 0
-wrkid=`wmctrl -d | awk "/$sel/"'{print $1}'`
-test $wrkid && wmctrl -s $wrkid || wmctrl -a "$sel" || emacsclient -c --eval "(switch-to-buffer \"$sel\")" || exit 1
-exit 0
+                           | xargs echo -e
+}
+
+ebuf_sw ()
+{
+    ebuf_ls | grep -q "$1" && \
+        emacsclient -c --eval "(switch-to-buffer \"$sel\")"
+}
+
+args="$@"
+
+# collect items
+items=""
+for a in $args; do
+    isfn ${a}_ls && items="$items\n"`${a}_ls`
+done
+
+# select
+sel=`echo "$items" | sort -u | dmenu $PARAMS`
+test -z "$sel" && exit 0 # 1?
+
+# try to switch
+for a in $args; do
+    isfn ${a}_sw && `${a}_sw $sel` 2>/dev/null && exit 0
+done
+
+exit 1
