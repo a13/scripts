@@ -17,7 +17,7 @@ xwin_ls ()
 
 xwin_sw ()
 {
-    wmctrl -a "$1"    
+    wmctrl -a "$1"
 }
 
 # X desktops
@@ -59,11 +59,12 @@ done
 
 # select
 sel=`echo "$items" | sort -u | dmenu $PARAMS`
+echo $sel
 test -z "$sel" && exit 0 # 1?
 
 # try to switch
 for a in $args; do
-    isfn ${a}_sw && `${a}_sw $sel` 2>/dev/null && exit 0
+    isfn ${a}_sw && `${a}_sw "$sel"` 2>/dev/null && exit 0
 done
 
 exit 1
