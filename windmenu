@@ -1,5 +1,5 @@
 #!/bin/sh
-FONT="-*-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-*"
+FONT="-*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*"
 NB="#122212"
 NF="#DEDEDE"
 SB="#445444"
@@ -49,7 +49,7 @@ ebuf_ls ()
 ebuf_sw ()
 {
     ebuf_ls | grep -q "$1" && \
-        emacsclient -c --eval "(switch-to-buffer \"$sel\")"
+        emacsclient -c --eval "(switch-to-buffer \"$1\")"
 }
 
 args="$@"
