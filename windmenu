@@ -20,7 +20,7 @@ xwin_ls ()
 
 xwin_sw ()
 {
-    wmctrl -a -F "$1"
+    wmctrl -F -a "$1"
 }
 
 # X desktops
