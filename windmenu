@@ -8,7 +8,7 @@ MISC="-i -l 10"
 DMENU="dmenu -fn $FONT -nb $NB -nf $NF -sb $SB -sf $SF $MISC"
 
 isfn ()
-{ 
+{
     type $1 | grep -q 'shell function'
 }
 
@@ -32,16 +32,16 @@ xdesk_ls ()
 xdesk_sw ()
 {
     wrkid=`wmctrl -d | awk "/$1/"'{print $1}'`
-    test $wrkid && wmctrl -s $wrkid 
+    test $wrkid && wmctrl -s $wrkid
 }
 
 # emacs buffers
 ebuf_ls ()
 {
     emacsclient --eval \
-        '(mapconcat (quote (lambda (s) (format "%s" s))) 
-	    (remove-if (quote (lambda (name) (string= (substring name 0 1) " "))) 
-		       (mapcar (quote buffer-name) (buffer-list))) 
+        '(mapconcat (quote (lambda (s) (format "%s" s)))
+	    (remove-if (quote (lambda (name) (string= (substring name 0 1) " ")))
+		       (mapcar (quote buffer-name) (buffer-list)))
 		       "\n")' \
                            | xargs echo -e
 }
