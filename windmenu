@@ -48,10 +48,20 @@ ebuf_ls ()
 
 ebuf_sw ()
 {
-    ebuf_ls | grep -q "$1" && \
+    ebuf_ls | grep -x -q "$1" && \
         emacsclient -c --eval "(switch-to-buffer \"$1\")"
 }
 
+kvm_ls ()
+{
+    ps ax | grep kvm | sed -n 's/^.*-name \([^[[:blank:]]*\) .*$/\1/p'
+}
+
+kvm_sw ()
+{
+     dp=`ps ax | grep "kvm -name $1" | sed -n 's/^.*-vnc \([^[[:blank:]]*\) .*$/\1/p'`
+     xtightvncviewer $dp
+}
 args="$@"
 
 # collect items
