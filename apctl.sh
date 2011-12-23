@@ -54,5 +54,5 @@ xmms2_toggle ()
 
 for pl in xmms2 deadbeef
 do
-    ${pl}_run && ${pl}_${cmd}
+    ${pl}_run && ${pl}_${cmd} 2>/dev/null
 done
