@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cmd=$1
+LOCK=/tmp/.apctl.lock
 
 deadbeef_run ()
 {
@@ -52,7 +53,12 @@ xmms2_toggle ()
     nyxmms2 toggle
 }
 
+test -e $LOCK && exit 
+touch $LOCK
+
 for pl in xmms2 deadbeef
 do
     ${pl}_run && ${pl}_${cmd} 2>/dev/null
 done
+
+rm $LOCK
