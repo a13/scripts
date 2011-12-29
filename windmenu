@@ -48,7 +48,7 @@ ebuf_ls ()
 
 ebuf_sw ()
 {
-    ebuf_ls | grep -x -q "$1" && \
+    ebuf_ls | grep -x -F -q -e "$1" && \
         emacsclient -c --eval "(switch-to-buffer \"$1\")"
 }
 
