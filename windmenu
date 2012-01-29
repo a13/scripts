@@ -1,10 +1,14 @@
 #!/bin/sh
-FONT="-*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*"
+
 NB="#122212"
 NF="#DEDEDE"
 SB="#445444"
 SF="#EFEFEF"
 MISC="-i -l 10"
+ldd /usr/bin/dmenu | grep -q libXft && \
+    FONT="Consolas-9" || \
+    FONT="-*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*"
+
 DMENU="dmenu -fn $FONT -nb $NB -nf $NF -sb $SB -sf $SF $MISC"
 
 isfn ()
