@@ -30,27 +30,27 @@ deadbeef_toggle ()
 
 xmms2_run ()
 {
-    which nyxmms2 >/dev/null && pgrep xmms2d >/dev/null
+    which xmms2 >/dev/null && pgrep xmms2d >/dev/null
 }
 
 xmms2_np ()
 {
-    nyxmms2 current | grep -q ^Playing
+    xmms2 current | grep -q ^Playing
 }
 
 xmms2_next ()
 {
-    nyxmms2 next
+    xmms2 next
 }
 
 xmms2_prev ()
 {
-    nyxmms2 prev
+    xmms2 prev
 }
 
 xmms2_toggle ()
 {
-    nyxmms2 toggle
+    xmms2 toggle
 }
 
 test -e $LOCK && exit 
