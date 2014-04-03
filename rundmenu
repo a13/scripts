@@ -1,2 +1,6 @@
 #!/bin/sh
-`dmenu_path | dmenu -fn "-*-terminus-*-*-*-*-*-160-*-*-*-*-iso10646-1" -nb '#000000' -nf '#FFFFFF' -sb '#0066ff'` && eval "exec $exe"
+ldd /usr/bin/dmenu | grep -q libXft && \
+    FONT="Consolas-10" || \
+    FONT="-*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*"
+
+dmenu_run -fn $FONT -nb '#000000' -nf '#FFFFFF' -sb '#0066ff'

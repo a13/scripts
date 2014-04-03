@@ -1,12 +1,17 @@
 #!/bin/sh
-FONT="-*-terminus-bold-*-*-*-18-*-*-*-*-*-iso10646-*"
 NB="#EFEFEF"
 NF="#222222"
 SB="#64778A"
 SF="#EFEFEF"
 MISC="-i -l 10"
+ldd /usr/bin/dmenu | grep -q libXft && \
+    FONT="Consolas-9" || \
+    FONT="-*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*"
+
 DMENU="dmenu -fn $FONT -nb $NB -nf $NF -sb $SB -sf $SF $MISC"
 
 xmms2 current -f '${title}' | xsel -i
-xmms2 jump `xmms2 list | sed -n 's/\[\(.*\)\/.*\]/\1|/gp' | column -s \| -t | $DMENU | awk '{print $1}' | sed 's/->//g'`
-xmms2 play
+track=`xmms2 list | sed -n 's/\[\(.*\)\/.*\]/\1|/gp' | column -s \| -t | $DMENU | awk '{print $1}' | sed 's/->//g'`
+test -z $track && exit 1
+xmms2 jump $track && \
+    xmms2 play
