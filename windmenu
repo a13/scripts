@@ -10,7 +10,7 @@ ldd /usr/bin/dmenu | grep -q libXft && \
     FONT="-*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*"
 
 DMENU="dmenu -fn $FONT -nb $NB -nf $NF -sb $SB -sf $SF $MISC"
-
+#DMENU="xwinmosaic -rp -S -W 600 -H 30 -t -i 24"
 isfn ()
 {
     type $1 | grep -q 'shell function'
@@ -22,7 +22,21 @@ xwin_ls ()
     wmctrl -l | awk '{print substr($0, index($0,$4))}'
 }
 
+xwinfmt_ls ()
+{
+#    wmctrl -xl | \
+#        awk '{split($3, class, "."); print ",," tolower(class[2]) "," substr($0, index($0,$5)) ","}'
+# ignore emacs
+    wmctrl -xl | \
+        awk '{if ($3 != "emacs.Emacs") { split($3, class, "."); print ",," tolower(class[2]) "," substr($0, index($0,$5)) ","}}'
+}
+
 xwin_sw ()
+{
+    wmctrl -F -a "$1"
+}
+
+xwinfmt_sw ()
 {
     wmctrl -F -a "$1"
 }
@@ -55,6 +69,19 @@ ebuf_sw ()
     ebuf_ls | grep -x -F -q -e "$1" && \
         emacsclient -c --eval "(switch-to-buffer \"$1\")"
 }
+
+# from emacs fancy
+emacs_ls ()
+{
+    emacsclient --eval '(xwm-list-buffers)' | xargs echo -e
+}
+
+emacs_sw ()
+{
+    emacs_ls |awk -F',' '{ print $4 }'| grep -x -F -q -e "$1" && \
+        emacsclient --eval "(switch-to-buffer \"$1\")"
+}
+
 
 kvm_ls ()
 {

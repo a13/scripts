@@ -1,4 +1,5 @@
 #!/bin/sh
+
 NB="#EFEFEF"
 NF="#222222"
 SB="#64778A"
@@ -11,6 +12,9 @@ ldd /usr/bin/dmenu | grep -q libXft && \
 DMENU="dmenu -fn $FONT -nb $NB -nf $NF -sb $SB -sf $SF $MISC"
 
 xmms2 current -f '${title}' | xsel -i
+# add 
+# STATUS_FORMAT=${playback_status}: ${artist} - ${title}: ${playtime} of ${duration}
+# to ~/.config/xmms2/clients/nycli.conf
 track=`xmms2 list | sed -n 's/\[\(.*\)\/.*\]/\1|/gp' | column -s \| -t | $DMENU | awk '{print $1}' | sed 's/->//g'`
 test -z $track && exit 1
 xmms2 jump $track && \
